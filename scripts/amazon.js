@@ -1,4 +1,5 @@
 import {cart} from "../data/cart.js";
+import {products} from "../data/products.js";
 //we have imported the cart array from the cart.js file so that we can use it in this file
 //rules for importing and exporting modules
 //1. The module that exports the data should have an export statement
