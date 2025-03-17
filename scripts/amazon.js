@@ -20,7 +20,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${maths.round(product.priceCents / 100, 2)}
+            $${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
