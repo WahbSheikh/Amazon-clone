@@ -1,3 +1,13 @@
+import {cart} from "../data/cart.js";
+//we have imported the cart array from the cart.js file so that we can use it in this file
+//rules for importing and exporting modules
+//1. The module that exports the data should have an export statement
+//2. The module that imports the data should have an import statement
+//3. The import statement should be at the top of the file
+//4. The import statement should be in curly braces if the module exports multiple items
+//5. The import statement should be without curly braces if the module exports a single item
+//6. The import statement should have the same name as the exported item
+//7.we can open it using live server by right clicking on the file and selecting open with live server
 let ProductsHTML = "";
 products.forEach((product) => {
   ProductsHTML += `
