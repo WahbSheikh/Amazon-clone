@@ -1,5 +1,5 @@
-import {cart} from "../data/cart.js";
-import {products} from "../data/products.js";
+import { cart ,addProductToCart} from "../data/cart.js";
+import { products } from "../data/products.js";
 //we have imported the cart array from the cart.js file so that we can use it in this file
 //rules for importing and exporting modules
 //1. The module that exports the data should have an export statement
@@ -24,7 +24,7 @@ products.forEach((product) => {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars*10}.png">
+              src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
@@ -66,31 +66,22 @@ products.forEach((product) => {
 });
 
 document.querySelector(".js-products-grid").innerHTML = ProductsHTML;
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+}
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
-   const productId = button.getAttribute("data-product-id");
-   const productName = button.getAttribute("data-product-name");
-   //we could also use the following code to get the product name
+    const productId = button.getAttribute("data-product-id");
+    const productName = button.getAttribute("data-product-name");
+    //we could also use the following code to get the product name
     //const productName = button.dataset.productName;
-   let matched;
-   cart.forEach((product) => {
-      if (product.id === productId) {
-        matched = product;
-      }
-   });
-    if (matched) {
-        matched.quantity += 1;
-    }else {
-      cart.push({
-        id : productId,
-        name: productName,
-        quantity: 1,
-      });
-    }
-    let cartQuantity = 0;
-    cart.forEach((product) => {
-      cartQuantity += product.quantity;
-    });
-    document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+    addProductToCart(productId, productName);
+    updateCartQuantity();
   });
 });
