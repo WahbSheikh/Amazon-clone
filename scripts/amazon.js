@@ -1,5 +1,6 @@
 import { cart ,addProductToCart} from "../data/cart.js";
 import { products } from "../data/products.js";
+import { formatMoney } from "./utils/money.js";
 //we have imported the cart array from the cart.js file so that we can use it in this file
 //rules for importing and exporting modules
 //1. The module that exports the data should have an export statement
@@ -31,7 +32,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.priceCents / 100).toFixed(2)}
+            $${formatMoney(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -66,6 +67,8 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = ProductsHTML;
 
+
+
 function updateCartQuantity() {
   let cartQuantity = 0;
   cart.forEach((cartItem) => {
@@ -79,7 +82,15 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     const productId = button.getAttribute("data-product-id");
     //we could also use the following code to get the product name
     //const productName = button.dataset.productName;
-    addProductToCart(productId);
+    const checkmark = button.closest(".product-container").querySelector(".added-to-cart");
+    checkmark.style.opacity = "1"; // Show the checkmark
+    setTimeout(() => {
+      checkmark.style.opacity = "0"; // Hide it after 2 seconds
+    }, 2000);    
+    const quantitySelector = button.closest(".product-container").querySelector("select");
+    let quan = Number(quantitySelector.value);
+    addProductToCart(productId,quan);
     updateCartQuantity();
+
   });
 });
