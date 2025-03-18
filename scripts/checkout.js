@@ -2,6 +2,7 @@ import { cart, removeProductFromCart, updateProductQuantity } from "../data/cart
 import { products } from "../data/products.js";
 import { formatMoney } from "./utils/money.js";
 
+
 let cartHTML = "";
 
 cart.forEach((cartItem) => {
@@ -87,6 +88,17 @@ cart.forEach((cartItem) => {
 
 document.querySelector(".js-order-summary").innerHTML = cartHTML;
 
+function updatcheckouteCartQuantity() {
+let cartQuantity = 0;
+
+cart.forEach((cartItem) => {
+  cartQuantity += cartItem.quantity;
+});
+
+document.querySelector('.js-return-to-home-link')
+  .innerHTML = `${cartQuantity} items`;
+}
+updatcheckouteCartQuantity();
 // Delete Functionality
 document.querySelectorAll(".js-delete-quantity").forEach((link) => {
   link.addEventListener("click", () => {
@@ -101,6 +113,7 @@ document.querySelectorAll(".js-delete-quantity").forEach((link) => {
 
     // Remove product from cart
     removeProductFromCart(productId); // 🔹 Fixed: No need for `Number()`
+    updatcheckouteCartQuantity();
   });
 });
 
@@ -148,3 +161,5 @@ document.querySelectorAll(".js-update-quantity").forEach((link) => {
     });
   });
 });
+
+
