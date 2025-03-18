@@ -10,6 +10,9 @@ import { formatMoney } from "./utils/money.js";
 //5. The import statement should be without curly braces if the module exports a single item
 //6. The import statement should have the same name as the exported item
 //7.we can open it using live server by right clicking on the file and selecting open with live server
+let cartQuantity = JSON.parse(localStorage.getItem("cartQuantity")) || 0;
+document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+
 let ProductsHTML = "";
 products.forEach((product) => {
   ProductsHTML += `
@@ -64,8 +67,10 @@ products.forEach((product) => {
         </div>
   `;
 });
-
 document.querySelector(".js-products-grid").innerHTML = ProductsHTML;
+
+// Call this function to update cart quantity when page loads
+updateCartQuantity();
 
 
 
@@ -74,8 +79,13 @@ function updateCartQuantity() {
   cart.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
   });
+
+  // Save cartQuantity to localStorage
+  localStorage.setItem("cartQuantity", JSON.stringify(cartQuantity));
+
   document.querySelector(".js-cart-quantity").textContent = cartQuantity;
 }
+
 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
