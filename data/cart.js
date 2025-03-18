@@ -22,5 +22,4 @@ export function addProductToCart(productId, quantity = 1) {
       quantity: quantity, // Set the selected quantity
     });
   }
-
 }
