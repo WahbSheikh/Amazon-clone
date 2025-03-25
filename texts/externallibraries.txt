@@ -1,0 +1,46 @@
+External  library 
+the code that is outside of our ptoject
+we actually load this code into our project from internet
+we can load it using a scropt type
+
+why we use external libraries
+let us share code
+save time 
+avoid duplicating work  
+
+
+
+in delivery option 
+the cheapest option to deliver is get product in 7 days 
+3 days
+then 1 
+to get these datas
+get today's date
+do calculation 
+(add 7 days)
+display date in an easy to read format
+
+
+we will be using DayJS an external library
+
+
+Minification 
+minimizing code to fit in
+
+
+external libraries + js modules
+
+we r loading the external libraries as script which can create conflicts
+
+a better way to load external libraries is to use javascript modules
+bcz a module will contain this code inside a file and any variables that are created inside the file will not conflict with anything outside the file
+
+to use external libraries + js modules together we are going to use a special version of library called an ESM Version 
+ESM = EcmaScript Module 
+it is another name for js
+
+
+a new syntax called Default export
+another way of exporing something from a file
+we can use it when we only want to export 1 thing from a file
+
