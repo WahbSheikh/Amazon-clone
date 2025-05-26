@@ -1,16 +1,25 @@
-import { cart, removeProductFromCart, updateProductQuantity } from "../data/cart.js";
+import { cart, removeProductFromCart, updateProductQuantity, clearCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatMoney } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
+// import { storeOrder } from "./orders.js";
 
 let cartHTML = "";
 
 if (cart.length === 0) {
   cartHTML = `<div class="cart-empty-message">
-    Your cart is empty. <a href="amazon.html" class="link-primary">Return to Home</a>
+   <p>
+   Your cart is empty.
+   </p>
+    <a href="amazon.html" class="link-primary"><button class="button-primary js-return-to-home-link"> Return to Home</button></a>
   </div>`;
+  let but = document.querySelector(".js-order-place-button");
+  but.style.opacity = 0.5;
+  but.disabled = true;
+  
 }
+export let finaltotal = 0;
 
 cart.forEach((cartItem) => {
   const productId = cartItem.id;
@@ -22,6 +31,9 @@ cart.forEach((cartItem) => {
     return;
   }
 
+  if (!cartItem.deliveryOptionId) {
+    cartItem.deliveryOptionId = 1;
+  }
 
   // Get selected delivery option for this item
   let selectedOption = deliveryOptions.find(option => option.id === cartItem.deliveryOptionId);
@@ -92,6 +104,37 @@ function deliveryOptionsHTML(productId, selectedOptionId) {
     </div>`;
   }).join("");
 }
+
+// In the order placement click handler:
+document.querySelector(".js-order-place-button").addEventListener("click", () => {
+  if (cart.length === 0) return;
+
+  let orderData = {
+    items: cart.map(cartItem => {
+      const product = products.find(p => p.id === cartItem.id) || {};
+      return {
+        id: cartItem.id,
+        quantity: cartItem.quantity,
+        name: product.name,
+        image: product.image,
+        priceCents: product.priceCents,
+        deliveryOptionId: cartItem.deliveryOptionId || "1"
+      };
+    }),
+    total: finaltotal,
+    date: dayjs().format("MMMM D, YYYY"),
+    orderId: `ORD-${Math.floor(Math.random() * 1000000)}`
+  };
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(orderData);
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  clearCart(); // Use the imported function instead of manual clearing
+  window.location.href = "orders.html";
+});
+
+
 
 // Update delivery date when an option is selected
 document.body.addEventListener("change", (event) => {
@@ -181,15 +224,14 @@ document.querySelectorAll(".js-update-quantity").forEach((link) => {
 });
 
 //updatepriceaccoprding to quantity
+
+
 function updatePrice() {
-  let itemTotal = 0;
-  let shippingCost = 0;
-  let taxRate = 0.10;
+  let itemTotal = 0, shippingCost = 0, taxRate = 0.10;
 
-  cart.forEach((cartItem) => {
-    let matchedProduct = products.find((product) => product.id === cartItem.id);
+  cart.forEach(cartItem => {
+    let matchedProduct = products.find(product => product.id === cartItem.id);
     let selectedOption = deliveryOptions.find(option => option.id === cartItem.deliveryOptionId);
-
     if (matchedProduct && selectedOption) {
       itemTotal += matchedProduct.priceCents * cartItem.quantity;
       shippingCost += selectedOption.priceCents;
@@ -200,6 +242,9 @@ function updatePrice() {
   let estimatedTax = totalBeforeTax * taxRate;
   let orderTotal = totalBeforeTax + estimatedTax;
 
+  
+
+
   // Update the UI
   document.querySelector(".js-cart-quantity").textContent = cart.reduce((total, item) => total + item.quantity, 0);
   document.querySelector(".js-items-total").textContent = `$${formatMoney(itemTotal)}`;
@@ -207,6 +252,15 @@ function updatePrice() {
   document.querySelector(".js-total-before-tax").textContent = `$${formatMoney(totalBeforeTax)}`;
   document.querySelector(".js-estimated-tax").textContent = `$${formatMoney(estimatedTax)}`;
   document.querySelector(".js-order-total").textContent = `$${formatMoney(orderTotal)}`;
+  document.querySelector(".js-order-total").textContent = `$${formatMoney(orderTotal)}`;
+  console.log(orderTotal);
+  finaltotal = orderTotal;
 }
 
 
+// Function to store orders
+// document.querySelector(".js-order-place-button").addEventListener("click", () => {
+//   storeOrder();
+//   clearCart();
+//   window.location.href = "amazon.html";
+// });
