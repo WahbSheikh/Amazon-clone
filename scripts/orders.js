@@ -11,7 +11,7 @@ if (orders.length === 0) {
   orderHTML = `
     <div class="order-empty-message">
       <p>You have no orders.</p>
-      <a href="amazon.html" class="link-primary">
+      <a href="index.html" class="link-primary">
         <button class="button-primary">Return to Home</button>
       </a>
     </div>`;

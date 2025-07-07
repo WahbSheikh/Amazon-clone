@@ -12,7 +12,7 @@ if (cart.length === 0) {
    <p>
    Your cart is empty.
    </p>
-    <a href="amazon.html" class="link-primary"><button class="button-primary js-return-to-home-link"> Return to Home</button></a>
+    <a href="index.html" class="link-primary"><button class="button-primary js-return-to-home-link"> Return to Home</button></a>
   </div>`;
   let but = document.querySelector(".js-order-place-button");
   but.style.opacity = 0.5;
@@ -262,5 +262,5 @@ function updatePrice() {
 // document.querySelector(".js-order-place-button").addEventListener("click", () => {
 //   storeOrder();
 //   clearCart();
-//   window.location.href = "amazon.html";
+//   window.location.href = "index.html";
 // });
